@@ -19,7 +19,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.UTILITY_ACCOUNT_ID }}:role/Digabi2PrivateEcrGithubActionsAccessRole
+          role-to-assume: arn:aws:iam::${{ secrets.UTILITY_ACCOUNT_ID }}:role/CollaboraGithubActionsAccessRole
           aws-region: eu-north-1
       - name: Login to Amazon ECR
         id: login-ecr
@@ -29,7 +29,7 @@ jobs:
       - name: Configure Public ECR AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.UTILITY_ACCOUNT_ID }}:role/Digabi2PublicEcrGithubActionsAccessRole
+          role-to-assume: arn:aws:iam::${{ secrets.UTILITY_ACCOUNT_ID }}:role/CollaboraPublicGithubActionsAccessRole
           aws-region: us-east-1
       - name: Login to Amazon ECR
         id: login-public-ecr
@@ -37,9 +37,9 @@ jobs:
         with:
           registry-type: public
       - name: Tag image
-        run: docker tag ${{ steps.login-ecr.outputs.registry }}/collabora:${{ inputs.tag }} ${{ steps.login-public-ecr.outputs.registry }}/u3p9b9p9/collabora-public:${{ inputs.tag }}
+        run: docker tag ${{ steps.login-ecr.outputs.registry }}/collabora:${{ inputs.tag }} ${{ steps.login-public-ecr.outputs.registry }}/u3p9b9p9/collabora:${{ inputs.tag }}
       - name: Push image
-        run: docker push ${{ steps.login-public-ecr.outputs.registry }}/u3p9b9p9/collabora-public:${{ inputs.tag }}
+        run: docker push ${{ steps.login-public-ecr.outputs.registry }}/u3p9b9p9/collabora:${{ inputs.tag }}
       - name: Create Github Release
         uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564 # Pin to commit hash to prevent compromise of third party action
         with:
