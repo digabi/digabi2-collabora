@@ -16,7 +16,7 @@ if [ "$CURRENT_BRANCH" != "$BRANCH_TO_RELEASE_FROM" ]; then
 fi
 
 echo ""
-OLD_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0") 
+OLD_VERSION=$(git ls-remote --tags --refs --sort="v:refname" git@github.com:digabi/abitti2-collabora.git | tail -n1 | sed 's/.*\///' 2>/dev/null || echo "v0.0.0") 
 echo "Old version: $OLD_VERSION"
 echo ""
 
