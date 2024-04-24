@@ -4,7 +4,7 @@ BRANCH_TO_RELEASE_FROM="main"
 
 # Show help message if no arguments are given or -h/--help flag is used
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-  echo "Usage: release.sh"
+  echo "Takes no arguments, releases a new image version to private ECR."
   exit 0
 fi
 
@@ -34,8 +34,7 @@ read -p "Do you want to release version $NEW_VERSION? (y/n): " answer
 
 if [ "$answer" = "y" ]; then
   if ! git tag -m "Release $NEW_VERSION" "$NEW_VERSION"; then
-    git reset --soft HEAD~1
-    echo "Failed to create tag $NEW_VERSION. Release aborted and commit reverted."
+    echo "Failed to create tag $NEW_VERSION. Release aborted."
     exit 1
   fi
   echo ""
