@@ -1,24 +1,18 @@
 # abitti2-collabora
 Collabora Online for Abitti2
 
-## Building 
+## Development
 
-Build the image with the following command
+The development flow is roughly as follows
 
-```
-docker build -t collabora .
-```
+1. Make your changes
+2. To test your changes, rebuild and tag the docker image by running `./docker-build-and-tag.sh`
+3. Restart the digabi2 docker compose to make sure that the new image is used.
 
-## Running
+## Development release
 
-Set the environment variable HOST_NAME (host name and port) and run the following command
-
-```
-docker run --rm -it --network ktpjs_ktpjs_network --hostname collabora --env username=test --env password=test --env extra_params="--o:server_name=${HOST_NAME}" collabora
-```
+To release a new development version of Collabora, run `./dev-release.sh`. This will create a new git tag, and build and push a Docker image with that tag into our private ECR. Building and pushing to ECR happens in Github Actions. Once built and pushed, you can update the Collabora version `apps-dev.json` in the `digabi2` repository to point to the new tag.
 
 ## Release
 
-To release a development version of Collabora, run `dev-release.sh`. This will build and publish the Collabora image to private ECR
-
-To release a production version of Collabora, run `release.sh`. This will prompt you for a tag to promote for a production release. The image with the corresponding tag will be transferred from the private ECR to the public ECR.
+To promote a development version of the image to production (i.e. release it to our public ECR) run `./release.sh`. Choose the tag you want to promote to production, which will trigger a Github Actions workflow. The workflow will push the corresponding private image to our public ECR. After this has completed, update the Collabora version in `apps-prod.json` in the `digabi2` repository to point to the newly released image tag.
