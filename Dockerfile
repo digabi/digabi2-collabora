@@ -1,4 +1,4 @@
-FROM collabora/code
+FROM collabora/code:24.04.2.1.1
 
 COPY coolwsd.xml /etc/coolwsd/coolwsd.xml
 
