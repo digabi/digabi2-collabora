@@ -1,40 +1,16 @@
-name: "Dev Release"
+name: Dev release
 
 on:
   push:
-    tags: "**"
+    tags: '**'
 
 concurrency:
   group: ${{ github.ref_name }}
 
 jobs:
   dev-release:
-    name: Release to private ECR
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.UTILITY_ACCOUNT_ID }}:role/CollaboraGithubActionsAccessRole
-          aws-region: eu-north-1
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: ${{ steps.login-ecr.outputs.registry }}/collabora:${{ github.ref_name }}
-          provenance: false
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+    uses: digabi/workflows-common/.github/workflows/digabi2-companion-app-dev-release.yml@4ec7a0650fabcced0f93f871e52d08dfd1702a9d
+    with:
+      app-name: collabora
+      aws-access-role: CollaboraGithubActionsAccessRole
+    secrets: inherit
