@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   release:
-    uses: digabi/workflows-common/.github/workflows/digabi2-companion-app-prod-release.yml@5815bd12026c83a2d361f867e3a9d9a32ac2e8eb
+    uses: digabi/workflows-common/.github/workflows/digabi2-companion-app-prod-release.yml@4988b3dc2d71079e87bf06682d2b600fbf196ce6
     with:
       app-name: collabora
       aws-access-role: CollaboraGithubActionsAccessRole
