@@ -13,9 +13,10 @@ concurrency:
 
 jobs:
   release:
-    uses: digabi/workflows-common/.github/workflows/digabi2-companion-app-prod-release.yml@4988b3dc2d71079e87bf06682d2b600fbf196ce6
+    uses: digabi/workflows-common/.github/workflows/digabi2-companion-app-prod-release.yml@main
     with:
       app-name: collabora
-      aws-access-role: CollaboraGithubActionsAccessRole
       tag: ${{ inputs.tag }}
-    secrets: inherit
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.UTILITY_AWS_ACCOUNT_ID }}
+
