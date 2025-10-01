@@ -6,6 +6,10 @@ COPY start.sh /start.sh
 # Image content modification steps
 USER root
 
+# Create WOPI proof mount volume so cool user can write to it
+RUN mkdir -p /mnt/wopi-proof
+RUN chown cool:cool /mnt/wopi-proof
+
 # Disable welcome message
 RUN sed -i "s|%ENABLE_WELCOME_MSG%|false|g" /usr/share/coolwsd/browser/dist/cool.html
 
@@ -22,4 +26,4 @@ RUN rm -rf /opt/collaboraoffice/share/numbertext/*
 
 USER cool
 
-CMD [ "/start.sh" ]
+ENTRYPOINT [ "/start.sh" ]
