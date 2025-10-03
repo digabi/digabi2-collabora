@@ -18,5 +18,13 @@ SERVER_NAME="$HOST_NAME:$SELF_PORT"
 echo "Port number obtained, replacing server name in coolwsd.xml with '$SERVER_NAME'"
 sed -i "s|>.*</server_name>|>$SERVER_NAME</server_name>|g" /etc/coolwsd/coolwsd.xml
 
+# Generate Collabora WOPI proof and copy public key to WOPI proof volume
+coolconfig generate-proof-key
+
+# Copy WOPI proof public key to volume
+# Private key is not copied. We'll use public key decryption on the KTP end
+# to validate the request without exposing the private key
+cp /etc/coolwsd/proof_key.pub /mnt/wopi-proof/collabora-wopi-proof.pub
+
 # Then start Collabora proper
-exec /start-collabora-online.sh --nodaemon
+exec /start-collabora-online.sh
