@@ -1,4 +1,4 @@
-FROM collabora/code:24.04.13.3.1
+FROM collabora/code:25.04.8.1.1
 
 COPY coolwsd.xml /etc/coolwsd/coolwsd.xml
 COPY start.sh /start.sh
