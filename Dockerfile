@@ -6,6 +6,20 @@ COPY start.sh /start.sh
 # Image content modification steps
 USER root
 
+# Install locales so that the lang URL parameter correctly controls
+# date/number formatting in LibreOffice (fi, sv, en).
+# The base image lacks debconf, so we unpack the locales package manually
+# and generate only the locales we need with localedef.
+RUN apt-get update -qq \
+    && apt-get download locales libc-l10n \
+    && dpkg-deb -x locales_*.deb / \
+    && dpkg-deb -x libc-l10n_*.deb / \
+    && rm -f *.deb \
+    && localedef -i fi_FI -f UTF-8 fi_FI.UTF-8 \
+    && localedef -i sv_SE -f UTF-8 sv_SE.UTF-8 \
+    && localedef -i en_GB -f UTF-8 en_GB.UTF-8 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Create WOPI proof mount volume so cool user can write to it
 RUN mkdir -p /mnt/wopi-proof
 RUN chown cool:cool /mnt/wopi-proof
