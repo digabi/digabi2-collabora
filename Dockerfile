@@ -18,7 +18,8 @@ RUN apt-get update -qq \
     && localedef -i fi_FI -f UTF-8 fi_FI.UTF-8 \
     && localedef -i sv_SE -f UTF-8 sv_SE.UTF-8 \
     && localedef -i en_GB -f UTF-8 en_GB.UTF-8 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && coolwsd-systemplate-setup /opt/cool/systemplate /opt/collaboraoffice
 
 # Create WOPI proof mount volume so cool user can write to it
 RUN mkdir -p /mnt/wopi-proof
