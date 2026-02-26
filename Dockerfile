@@ -19,7 +19,8 @@ RUN apt-get update -qq \
     && localedef -i sv_SE -f UTF-8 sv_SE.UTF-8 \
     && localedef -i en_GB -f UTF-8 en_GB.UTF-8 \
     && rm -rf /var/lib/apt/lists/* \
-    && coolwsd-systemplate-setup /opt/cool/systemplate /opt/collaboraoffice
+    && mkdir -p /opt/cool/systemplate/usr/lib/locale \
+    && cp /usr/lib/locale/locale-archive /opt/cool/systemplate/usr/lib/locale/
 
 # Create WOPI proof mount volume so cool user can write to it
 RUN mkdir -p /mnt/wopi-proof
