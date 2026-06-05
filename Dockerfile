@@ -10,6 +10,11 @@ USER root
 RUN mkdir -p /mnt/wopi-proof
 RUN chown cool:cool /mnt/wopi-proof
 
+# Install minimal tooling for container egress filtering.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends iptables \
+    && rm -rf /var/lib/apt/lists/*
+
 # Disable welcome message
 RUN sed -i "s|%ENABLE_WELCOME_MSG%|false|g" /usr/share/coolwsd/browser/dist/cool.html
 
@@ -23,7 +28,5 @@ RUN rm -rf /opt/collaboraoffice/share/extensions/*
 RUN rm -rf /opt/collaboraoffice/share/wordbook/*
 RUN rm -rf /opt/collaboraoffice/share/fingerprint/*
 RUN rm -rf /opt/collaboraoffice/share/numbertext/*
-
-USER cool
 
 ENTRYPOINT [ "/start.sh" ]
