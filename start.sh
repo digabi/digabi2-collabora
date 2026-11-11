@@ -29,7 +29,6 @@ echo "Port number obtained, replacing server name in coolwsd.xml with '$SERVER_N
 sed -i "s|>.*</server_name>|>$SERVER_NAME</server_name>|g" /etc/coolwsd/coolwsd.xml
 
 # Generate Collabora WOPI proof and copy public key to WOPI proof volume.
-# coolconfig is not shipped in the distroless image; openssl writes the same PEM pair.
 openssl genpkey -algorithm RSA -out /etc/coolwsd/proof_key -pkeyopt rsa_keygen_bits:2048
 openssl rsa -in /etc/coolwsd/proof_key -outform PEM -pubout -out /etc/coolwsd/proof_key.pub
 chmod 600 /etc/coolwsd/proof_key
@@ -39,7 +38,8 @@ chmod 600 /etc/coolwsd/proof_key
 # to validate the request without exposing the private key
 cp /etc/coolwsd/proof_key.pub /mnt/wopi-proof/collabora-wopi-proof.pub
 
-# Then start Collabora proper. The image no longer ships start-collabora-online.sh.
+# collabora/code ENTRYPOINT; the image no longer ships start-collabora-online.sh.
+# On upgrade: docker image inspect collabora/code:<tag> --format '{{json .Config.Entrypoint}}'
 exec /usr/bin/coolwsd \
   --use-env-vars \
   --o:sys_template_path=/opt/cool/systemplate \
